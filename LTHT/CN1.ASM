@@ -2,7 +2,7 @@ include lib1.asm
 .model small
 .stack 100h
 .data
-    ct1             db 13,10, 'Hay vao ten thu muc can tao: $' 
+    ct1             db 13,10, 'Hay nhap ten thu muc can tao: $' 
     Err_MD          db 13,10, 'Khong tao duoc thu muc! $'
     Suc_MD          db 13,10, 'Thu muc da duoc tao! $' 
     tieptuc         db 13,10, 'Co tiep tuc CT (c/k)? $' 
@@ -12,10 +12,9 @@ include lib1.asm
 .code
 PUBLIC @CN1$qv
 @CN1$qv proc
-; ps:
-; 	mov  ax, @data
-;     mov  ds, ax
     L_CT0:
+    mov  ax, @data
+    mov  ds, ax
         CLRSCR
         HienString ct1	; Hiện thông báo tm
         lea dx, buff            ; Vào tên thư mục cần tạo

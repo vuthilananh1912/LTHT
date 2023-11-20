@@ -3,7 +3,7 @@ INCLUDE LIB1.ASM ; Chứa 2 MACRO xóa màn hình và hiện xấu
 .MODEL small
 .STACK 100h
 .data
-    m1 db 13,10,'MT dang dung co G4A khong : $'
+    m1 db 13,10,'May Tinh dang dung co G4A khong : $'
     m2 db 13,10,'MT dang dung co cong COM khong :$'
     co db 'Co $'
     ko db 'Khong $'
@@ -11,8 +11,8 @@ INCLUDE LIB1.ASM ; Chứa 2 MACRO xóa màn hình và hiện xấu
     m4 db 13,10,'Dia chi cac cong COM la:$'
     space db ' $'
 .CODE
-public @CN1$qv
-@CN1$qv PROC
+public @CN3$qv
+@CN3$qv PROC
 PS:
     mov AX, @data ; Đưa phần địa chỉ segment của vùng nhớ chứa dữ
     mov DS,AX ; liệu vào DS
@@ -58,5 +58,5 @@ PS:
         int 21h
  ; Chứa CT con HIEN_HEXA
 INCLUDE LIB2.ASM
-@CN1$qv endp
+@CN3$qv endp
     END PS
