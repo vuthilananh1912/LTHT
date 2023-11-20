@@ -1,7 +1,7 @@
 INCLUDE lib1.asm
 .MODEL small
 .DATA
-M1 db 10,13,'Hay vao so luong thanh phan : $'
+M1 db 10,13,'Hay nhap so luong thanh phan : $'
 M2 db 10,13,'a[$'
 M3 db ']= $'
 M4 db 10,13,'Day so vua vao la : $'
