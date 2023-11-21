@@ -51,12 +51,6 @@ PS:
 	lea     bx,a		; bx trỏ đến a[0] (con trỏ offset)
 	xor    ax,ax		; ax chứa tổng (lúc đầu bằng 0)
    ;--------------------------------------------------------------------------------------
-   ; L3:	|
-   ;       add    ax,[bx]	; ax=ax+a[i]	|
-   ; 	add    bx,2	; bx trỏ đến thành phần tiếp theo của mảng a	|
-   ;	loop   L3	|
-   ;--------------------------------------------------------------------------------------
-
     L3:
         mov  dx,[bx]		; dx = a[i]
         shr    dx,1		; Bit thấp nhất vào cờ Carry (C=1-> a[i] là lẻ, C=0 -> a[i] là chẵn)
@@ -65,6 +59,7 @@ PS:
    L4:
 	    add    bx,2		; bx trỏ đến thành phần tiếp theo của mảng a
 		loop   L3	
+   ;--------------------------------------------------------------------------------------
 
         call    HIEN_SO_N	; Hiện giá trị tổng
         HienString M7	; Hiện thông báo M7 (Co tiep tuc CT (c/k) ?’)

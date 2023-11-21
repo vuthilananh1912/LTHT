@@ -18,7 +18,7 @@ PS:
     mov DS,AX ; liệu vào DS
     CLRSCR ; Xóa màn hình
 
-        ;kiem tra may tinh co cong DMA khong
+    ;kiem tra may tinh co cong DMA khong
         HienString m1 ; Hiện thông báo m1
         int 11h ;Nội dung byte có địa chỉ 0-411h→ AH
         mov AL,AH ; AL chứa nội dung byte 0:411h
@@ -28,6 +28,7 @@ PS:
         jmp L2
         L1:
             HienString co ; Hiện thông bảo 'Co
+            
     ;kiem tra xem may tinh co cong COM khong
     L2:
         HienString m2 ; Hiện thông báo m2

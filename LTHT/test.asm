@@ -10,9 +10,9 @@ include lib1.asm
     Chuyen_MD       db 13,10, 'Thu muc da duoc chuyen! $' 
     Rename_MD       db 13,10, 'Thu muc da duoc doi ten! $' 
     tieptuc         db 13,10, 'Co tiep tuc CT (c/k)? $' 
-    buff            db 30
+    buff            db 30, '$'
                     db ?
-    file_name       db 30 dup(?)
+    file_name       db 30 dup(?), '$'
 .code
 PUBLIC @CN1$qv
 @CN1$qv proc
@@ -22,40 +22,16 @@ PUBLIC @CN1$qv
     CLRSCR
 
     ;----------------------------------------------------------
-     ; Thêm chức năng đổi tên thư mục
     L_DoiTenTM:
         HienString ct1
         lea dx, buff            ; Vào tên thư mục cần đổi
         call GET_FILE_NAME              
-        lea si, file_name    ; Chức năng đổi tên thư mục
+        lea dx, file_name    ; Chức năng đổi tên thư mục
 
-        ; Xóa bỏ ký tự xuống dòng
-    xor di, di               ; Sử dụng thanh ghi di như một biến đếm
-    L_XoaXuongDong:
-        mov al, byte ptr [si + di]
-        cmp al, 13            ; Kiểm tra ký tự xuống dòng
-        je  XoaXuongDong
-        cmp al, 0             ; Kiểm tra kết thúc chuỗi
-        je  XoaXuongDong
-        inc di
-        jmp L_XoaXuongDong
-    XoaXuongDong:
-        mov byte ptr [si + di], 0   ; Đặt byte xuống dòng thành 0
-
+        HienString newmg
         lea dx, buff       ; Nhập tên mới
         call GET_FILE_NAME
-        lea si, file_name   ; Chức năng đổi tên thư mục
-
-    ; Thêm ký tự kết thúc chuỗi
-    xor di, di               ; Đặt lại thanh ghi di
-    L_ThemKetThuc:
-        mov al, byte ptr [si + di]
-        cmp al, 0             ; Kiểm tra kết thúc chuỗi
-        je  ThemKetThuc
-        inc di
-        jmp L_ThemKetThuc
-    ThemKetThuc:
-        mov byte ptr [si + di], '$' ; Thêm ký tự kết thúc chuỗi
+        lea dx, file_name       ; Chức năng đổi tên thư mục
 
         mov ah, 56h
         int 21h
@@ -66,9 +42,7 @@ PUBLIC @CN1$qv
     L_DoiTenTM1:
         HienString Rename_MD
         jmp Common_Exit
-
     ;----------------------------------------------------------
-    
         Common_Exit:
         HienString tieptuc       ; Hiện thông báo tieptuc
         mov ah, 1                    ; Chò 1 ký tự từ bàn phím
