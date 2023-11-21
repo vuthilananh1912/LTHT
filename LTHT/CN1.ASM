@@ -48,3 +48,12 @@ include lib3.asm		; lib3.asm chứa CT con GET_DIR_NAME
 END 
 
 ;Chú ý: Xóa thư mục và chuyển thư mục giống bài tập trên chỉ cần thay chức năng 39h bằng chức năng 3ah (xóa thư mục) hoăc 3bh (chuyển thư muc).
+; CMP: So sánh hai giá trị
+; CMP operand1, operand2
+; JMP: Nhảy đến một địa chỉ cụ thể
+; JMP destination
+; JE, JNE, JL, JG,… nhảy nếu điều kiện thỏa mãn
+; JE destination: Nhảy nếu bằng nhau
+; JNE destination: Nhảy nếu không bằng nhau
+; JL destination: Nhảy nếu ít hơn
+; JG destination: Nhảy nếu lớn hơn

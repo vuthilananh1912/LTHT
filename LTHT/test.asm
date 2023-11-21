@@ -13,16 +13,82 @@ include lib1.asm
     buff            db 30
                     db ?
     file_name       db 30 dup(?)
-    new_dir         db 30 dup(?)
 .code
 PUBLIC @CN1$qv
 @CN1$qv proc
     L_CT0:
     mov  ax, @data
     mov  ds, ax
+    CLRSCR
 
-    ; CLRSCR
-    ; HienString ct1	; Hiện thông báo tm
+    ;----------------------------------------------------------
+     ; Thêm chức năng đổi tên thư mục
+    L_DoiTenTM:
+        HienString ct1
+        lea dx, buff            ; Vào tên thư mục cần đổi
+        call GET_FILE_NAME              
+        lea si, file_name    ; Chức năng đổi tên thư mục
+
+        ; Xóa bỏ ký tự xuống dòng
+    xor di, di               ; Sử dụng thanh ghi di như một biến đếm
+    L_XoaXuongDong:
+        mov al, byte ptr [si + di]
+        cmp al, 13            ; Kiểm tra ký tự xuống dòng
+        je  XoaXuongDong
+        cmp al, 0             ; Kiểm tra kết thúc chuỗi
+        je  XoaXuongDong
+        inc di
+        jmp L_XoaXuongDong
+    XoaXuongDong:
+        mov byte ptr [si + di], 0   ; Đặt byte xuống dòng thành 0
+
+        lea dx, buff       ; Nhập tên mới
+        call GET_FILE_NAME
+        lea si, file_name   ; Chức năng đổi tên thư mục
+
+    ; Thêm ký tự kết thúc chuỗi
+    xor di, di               ; Đặt lại thanh ghi di
+    L_ThemKetThuc:
+        mov al, byte ptr [si + di]
+        cmp al, 0             ; Kiểm tra kết thúc chuỗi
+        je  ThemKetThuc
+        inc di
+        jmp L_ThemKetThuc
+    ThemKetThuc:
+        mov byte ptr [si + di], '$' ; Thêm ký tự kết thúc chuỗi
+
+        mov ah, 56h
+        int 21h
+        jnc L_DoiTenTM1
+        HienString Err_MD
+        jmp Common_Exit
+
+    L_DoiTenTM1:
+        HienString Rename_MD
+        jmp Common_Exit
+
+    ;----------------------------------------------------------
+    
+        Common_Exit:
+        HienString tieptuc       ; Hiện thông báo tieptuc
+        mov ah, 1                    ; Chò 1 ký tự từ bàn phím
+        int 21h                          
+        cmp al, 'c'                 ; Ký tự vào có phải 'c'
+        jne Thoat_CT        ; Không phải 'c' thì nhảy đế Thoat_TM,
+        jmp L_CT0	 ; còn đúng là 'c' thì nhảy về L_TM0
+    
+    Thoat_CT:                     
+        mov ah, 4ch		; Về DOS
+        int 21h
+
+ @CN1$qv endp             
+include lib3.asm		; lib3.asm chứa CT con GET_DIR_NAME
+END 
+
+;lưu ý
+;------
+;tạo thư mục
+; HienString ct1	; Hiện thông báo tm
     ; lea dx, buff            ; Vào tên thư mục cần tạo
     ; call GET_FILE_NAME              
     ; lea dx, file_name    ; Chức năng tạo thư mục
@@ -36,7 +102,7 @@ PUBLIC @CN1$qv
     ; L_CT1:
     ;     HienString Suc_MD   ; Hiện thông báo thành công
     ;     jmp Common_Exit
-
+;-----
     ; Thêm chức năng xóa thư mục
     ; L_XoaTM:
     ;     HienString ct1
@@ -53,7 +119,7 @@ PUBLIC @CN1$qv
     ; L_XoaTM1:
     ;     HienString Del_MD
     ;     jmp Common_Exit
-
+;---------------------------------------------------
     ; Thêm chức năng chuyển thư mục
     ; L_ChuyenTM:
     ;     HienString ct1
@@ -71,40 +137,26 @@ PUBLIC @CN1$qv
     ;     HienString Chuyen_MD
     ;     jmp Common_Exit
 
+;-----------------------------------------------------------
     ; Thêm chức năng đổi tên thư mục
-    L_DoiTenTM:
-        HienString ct1
-        lea dx, buff            ; Vào tên thư mục cần đổi
-        call GET_FILE_NAME              
-        lea dx, file_name    ; Chức năng đổi tên thư mục
+    ; L_DoiTenTM:
+    ;     HienString ct1
+    ;     lea dx, buff            ; Vào tên thư mục cần đổi
+    ;     call GET_FILE_NAME              
+    ;     lea dx, file_name    ; Chức năng đổi tên thư mục
 
-        HienString newmg
-        lea dx, new_dir       ; Nhập tên mới
-        call GET_FILE_NAME
-        lea dx, new_dir       ; Chức năng đổi tên thư mục
+    ;     HienString newmg
+    ;     lea dx, new_dir       ; Nhập tên mới
+    ;     call GET_FILE_NAME
+    ;     lea dx, new_dir       ; Chức năng đổi tên thư mục
 
-        mov ah, 56h
-        int 21h
-        jnc L_DoiTenTM1
-        HienString Err_MD
-        jmp Common_Exit
+    ;     mov ah, 56h
+    ;     int 21h
+    ;     jnc L_DoiTenTM1
+    ;     HienString Err_MD
+    ;     jmp Common_Exit
 
-    L_DoiTenTM1:
-        HienString Rename_MD
-        jmp Common_Exit
+    ; L_DoiTenTM1:
+    ;     HienString Rename_MD
+    ;     jmp Common_Exit
 
-    Common_Exit:
-        HienString tieptuc       ; Hiện thông báo tieptuc
-        mov ah, 1                    ; Chò 1 ký tự từ bàn phím
-        int 21h                          
-        cmp al, 'c'                 ; Ký tự vào có phải 'c'
-        jne Thoat_CT        ; Không phải 'c' thì nhảy đế Thoat_TM,
-        jmp L_CT0	 ; còn đúng là 'c' thì nhảy về L_TM0
-
-    Thoat_CT:                     
-        mov ah, 4ch		; Về DOS
-        int 21h
-
- @CN1$qv endp             
-include lib3.asm		; lib3.asm chứa CT con GET_DIR_NAME
-END 
