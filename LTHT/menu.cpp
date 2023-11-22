@@ -3,7 +3,7 @@
 extern CN1();
 extern CN2();
 extern CN3();
-//extern VeDOS();
+extern CN4();
 void main()
 {
     char tl;
@@ -21,22 +21,31 @@ void main()
     tl = getch();
     if (tl == 'c')
     {
-        L1:
+    L1:
         clrscr();
         printf("\n            CAC CHUC NANG CUA BTL");
         printf("\n            ---------***----------");
         printf("\n\n   1. Tao thu muc");
         printf("\n     2. Tinh tong cac thanh phan le cua day so nguyen");
         printf("\n     3. Kiem tra xem may tinh co cong COM khong");
+        printf("\n     4. Tinh tuoi");
         printf("\n     4. Thoat khoi chuong trinh.");
         printf("\n\n     Hay chon: ");
         scanf("%d", &cn);
         switch (cn)
         {
-       case 1:  CN1(); break;
-       case 2:  CN2(); break;
-        case 3: CN3(); break;
-        //case 4: VeDOS(); break;
+        case 1:
+            CN1();
+            break;
+        case 2:
+            CN2();
+            break;
+        case 3:
+            CN3();
+            break;
+        case 4:
+            CN4();
+            break;
         default:
             printf("\n     Vao sai roi!");
         }
